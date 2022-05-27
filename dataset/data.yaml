@@ -1,5 +1,5 @@
-train: /content/yolov5/dataset/images/train/
-val: /content/yolov5/dataset/images/valid/
+train: /content/neuro/dataset/images/train/
+val: /content/neuro/dataset/images/valid/
 
 nc: 1
 names: ['Walrus']
