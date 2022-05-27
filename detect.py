@@ -108,7 +108,7 @@ def run(
     model.warmup(imgsz=(1 if pt else bs, 3, *imgsz))  # warmup
     dt, seen = [0.0, 0.0, 0.0], 0
 
-    im_list=[]
+    im_paths=[]
     all_preds=[]
     for path, im, im0s, vid_cap, s in dataset:
         t1 = time_sync()
@@ -182,7 +182,7 @@ def run(
 
             # Stream results
             im0 = annotator.result()
-            im_list.append(im0)
+            im_paths.append(save_path)
             if view_img:
                 cv2.imshow(str(p), im0)
                 cv2.waitKey(1)  # 1 millisecond
