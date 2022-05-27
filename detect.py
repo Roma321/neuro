@@ -107,6 +107,9 @@ def run(
     # Run inference
     model.warmup(imgsz=(1 if pt else bs, 3, *imgsz))  # warmup
     dt, seen = [0.0, 0.0, 0.0], 0
+
+    im_list=[]
+    all_preds=[]
     for path, im, im0s, vid_cap, s in dataset:
         t1 = time_sync()
         im = torch.from_numpy(im).to(device)
@@ -122,6 +125,8 @@ def run(
         pred = model(im, augment=augment, visualize=visualize)
         t3 = time_sync()
         dt[1] += t3 - t2
+
+        all_preds.append(pred)
 
         # NMS
         pred = non_max_suppression(pred, conf_thres, iou_thres, classes, agnostic_nms, max_det=max_det)
@@ -172,6 +177,7 @@ def run(
 
             # Stream results
             im0 = annotator.result()
+            im_list.append(im0)
             if view_img:
                 cv2.imshow(str(p), im0)
                 cv2.waitKey(1)  # 1 millisecond
@@ -206,7 +212,7 @@ def run(
         LOGGER.info(f"Results saved to {colorstr('bold', save_dir)}{s}")
     if update:
         strip_optimizer(weights)  # update model (to fix SourceChangeWarning)
-
+    return im_list, all_preds
 
 def parse_opt():
     parser = argparse.ArgumentParser()
