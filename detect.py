@@ -219,7 +219,7 @@ def run(
         LOGGER.info(f"Results saved to {colorstr('bold', save_dir)}{s}")
     if update:
         strip_optimizer(weights)  # update model (to fix SourceChangeWarning)
-    return im_list, all_preds
+    return all_preds
 
 def parse_opt():
     parser = argparse.ArgumentParser()
